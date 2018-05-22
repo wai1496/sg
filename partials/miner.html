@@ -1,0 +1,243 @@
+
+<div class="row">
+  <div class="col-sm-3 col-md-3">
+    <br />
+    <!-- <p> -->
+    <!--  <button type="button" ng-click="minerCompat()" class="btn btn-warning btn-block">Compatibility reload</button> -->
+    <!-- </p> -->
+
+
+    <h3>Available pools</h3>
+
+    <h4>Decred Pools</h4>
+    <p class="help-block" ng-show="settings.userHelp">
+      Click to add pool to pool's list
+    </p>
+    
+  	<div class="list-group">          		  
+  			<a href="" ng-click="poolAdd({url:'stratum+tcp://stratum.decredpool.org:3344',pass:'x',priority:'0',algo:'decred'})" class="list-group-item">DecredPool</a>  			
+  			<a href="" ng-click="poolAdd({url:'stratum+tcp://dcr.coinmine.pl:1222',pass:'x',priority:'0',algo:'decred'})" class="list-group-item">CoinMine</a>        
+  			<a href="" ng-click="poolAdd({url:'stratum+tcp://dcr.suprnova.cc:2255 ',pass:'x',priority:'0',algo:'decred'})" class="list-group-item">SuprNova</a>                
+  			<a href="" ng-click="poolAdd({url:'stratum+tcp://decred.eu.nicehash.com:3354 ',pass:'x',priority:'0',algo:'decred'})" class="list-group-item">Nicehash</a>                
+    </div>
+    
+    <h4>Sia Pools</h4>
+    <p class="help-block" ng-show="settings.userHelp">
+      Click to add pool to pool's list
+    </p>
+
+    <div class="list-group">
+    		<a href="" ng-click="poolAdd({url:'stratum+tcp://asia.siamining.com:3333',pass:'x',priority:'0',algo:'sia'})" class="list-group-item">SiaMining</a>
+    		<a href="" ng-click="poolAdd({url:'stratum+tcp://us-east.luxor.tech:3333',pass:'x',priority:'0',algo:'sia'})" class="list-group-item">Luxor</a>
+  		<a href="" ng-click="poolAdd({url:'stratum+tcp://sia.eu.nicehash.com:3360 ',pass:'x',priority:'0',algo:'sia'})" class="list-group-item">Nicehash</a>                
+    </div>
+    
+    <h4>Lbry Pools</h4>
+    <p class="help-block" ng-show="settings.userHelp">
+      Click to add pool to pool's list
+    </p>
+
+    <div class="list-group">
+    		<a href="" ng-click="poolAdd({url:'stratum+tcp://lbc.coinmine.pl:8788',pass:'x',priority:'0',algo:'lbry'})" class="list-group-item">CoinMine</a>
+        <a href="" ng-click="poolAdd({url:'stratum+tcp://lbry.suprnova.cc:6257',pass:'x',priority:'0',algo:'lbry'})" class="list-group-item">SuprNova</a>
+  		<a href="" ng-click="poolAdd({url:'stratum+tcp://lbry.eu.nicehash.com:3356 ',pass:'x',priority:'0',algo:'lbry'})" class="list-group-item">Nicehash</a>                
+    </div>
+    
+    <h4>Pacsal Pools</h4>
+    <p class="help-block" ng-show="settings.userHelp">
+      Click to add pool to pool's list
+    </p>
+
+    <div class="list-group">
+    		<a href="" ng-click="poolAdd({url:'stratum+tcp://pasc-asia1.nanopool.org:15555',pass:'x',priority:'0',algo:'pascal'})" class="list-group-item">NanoPool</a>
+  		<a href="" ng-click="poolAdd({url:'stratum+tcp://pascal.eu.nicehash.com:3358 ',pass:'x',priority:'0',algo:'pascal'})" class="list-group-item">Nicehash</a>                
+    </div>
+    
+    <h4>Vcash Pools</h4>
+    <p class="help-block" ng-show="settings.userHelp">
+      Click to add pool to pool's list
+    </p>
+
+    <div class="list-group">
+    		<a href="" ng-click="poolAdd({url:'stratum+tcp://pool.vchain.info:3100',pass:'x',priority:'0',algo:'vcash'})" class="list-group-item">VChain</a>
+    </div>
+    
+  </div>
+    
+  <div class="col-sm-12 col-md-9 pull-right">
+		<div class="clearfix">
+			<div class="pull-right">
+				<br />
+				<p>
+					<button type="button" ng-click="minerRestart=1" class="btn btn-warning">Miner commands</button>
+				</p>
+				<p class="help-block" ng-show="minerRestart&&settings.userHelp">
+					Ordered from gentle to rough.
+				</p>
+				<div class="list-group" ng-show="minerRestart">
+					<a title="Reset miner" href="" ng-click="cgminer('restart')" class="list-group-item">Cgminer soft reset (RPC)</a>
+					<a title="Start miner" href="" ng-click="cgminerHardCtl('1')" class="list-group-item">Start</a> 
+					<a title="Restart miner" href="" ng-click="cgminerHardCtl('0')" class="list-group-item">Restart cgminer linux process(30s)</a>
+					<a title="Shutdown your PI (be careful!)" href="" id="link_shutdown" onclick="ctrl_host(1)" class="list-group-item">Shutdown</a> 
+					<a title="Reboot your PI" href="" id="link_reboot"  onclick="ctrl_host(0)" class="list-group-item">Reboot</a> 
+				</div>
+			</div>
+		</div>    
+
+
+
+    <h3>Pools</h3>
+
+    <p class="help-block" ng-show="settings.userHelp">
+      The settings below serve as direct input to the miner. <strong>One little error can and will let the miner crash.</strong>
+    </p>
+    <form name="poolForm" class="form-horizontal">
+      <div class="row">
+        <label class="col-sm-4">URL</label>
+        <label class="col-sm-2">Algo</label>
+        <label class="col-sm-3">User</label>
+        <label class="col-sm-1">Pass</label>
+	<label class="col-sm-1">Extranonce</label>
+        <label class="col-sm-1">Priority</label>
+      </div>
+      <div class="form-group" ng-repeat="pool in pools">
+        <div class="col-sm-4">
+          <input type="text" ng-model="pool.url" class="form-control" required>
+        </div>
+        
+        <div class="col-sm-2">        	
+  					<select class="form-control" ng-model="pool.algo" required>
+					<option>decred</option>
+    					<option>sia</option>    					
+    					<option>lbry</option>    					    					
+    					<option>pascal</option>    				
+    					<option>vcash</option>
+    					<option>blake256r8</option>
+    					<option>blake256r14</option>
+						<option>x11</option>    					
+    					<option>x11-gost</option>
+    					<option>veltor</option>
+    					<option>quark</option>
+    					<option>qubit</option>    					
+    					<option>nist5</option>
+    					<option>skein</option>
+    					<option>groestl</option>
+    					<option>myr-gr</option>    					
+    					<option>cryptonight</option>
+    					<option>cryptonight-lite</option>
+    					<option>blake256r8</option>
+    					<option>decred</option>
+    					<option>blake256r14</option>    					    					
+    					<option>vcash</option>    					    					
+    					<option>sia</option>    					
+    					<option>lbry</option>
+    					<option>x11</option>
+    					<option>x11gost</option>
+						<option>nist5</option>    					
+						<option>sibcoin</option>
+						<option>sibcoin-mod</option>
+    					<option>quark</option>
+    					<option>qubit</option>    					
+    					<option>skein</option>
+    					<option>myr-gr</option>
+						<option>blake256</option>    					
+    					<option>blake256r8</option>
+    					<option>blake256r14</option>    					
+    					<option>bmw</option>
+    					<option>bmw256</option>
+						<option>cn_blake256</option>    					
+    					<option>cn_blake2562</option>
+    					<option>cn_groestl256</option>    					
+    					<option>cn_jh</option>
+    					<option>cryptonight</option>
+						<option>cubehash</option>    					
+    					<option>darkcoin</option>
+    					<option>decred</option>    					
+    					<option>echo</option>
+    					<option>groestl</option>
+						<option>keccak</option>    					
+    					<option>keccak1600</option>
+    					<option>lbry</option>    					
+    					<option>luffa</option>
+    					<option>lyra2</option>
+						<option>lyra2re</option>    					
+    					<option>lyra2rev2</option>
+    					<option>lyra2v2</option>    					
+    					<option>neoscrypt</option>
+    					<option>pascal</option>
+						<option>scrypt</option>    					
+    					<option>quark</option>
+    					<option>siacoin</option>    					
+    					<option>skein</option>
+    					<option>panama</option>
+						<option>pascal</option>
+  					</select>					
+      	</div>
+        
+        <div class="col-sm-3">
+          <input type="text" ng-model="pool.user" class="form-control" required>
+        </div>
+      <div class="col-sm-1">
+          <input type="text" ng-model="pool.pass" class="form-control" required>
+      </div>
+
+      <div class="col-sm-1">
+	<div class="checkbox">
+		<label><input type="checkbox" ng-model="pool.extranonce" value="true">Yes</label>
+	</div>
+      </div>
+
+        <div class="col-sm-1">
+          <div class="input-group">
+            <input type="text" ng-model="pool.priority" class="form-control" required>
+            <div class="input-group-btn">
+              <button type="button" ng-click="poolRemove($index)" class="btn btn-default pull-right">&times;</button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <button type="button" class="btn btn-default" ng-click="poolBack()">Reload pools</button>
+      <button type="button" class="btn btn-default" ng-click="poolAdd()">Add pool</button>
+	  <button type="button" class="btn btn-default" ng-click="algolAdd()">Add algo</button>
+      <button type="button" ng-show="poolForm.$dirty && poolForm.$valid" class="btn btn-success" ng-click="poolSave()">Save pools</button>
+    </form>
+
+
+
+      <h3>SGMINER Options</h3>
+      <label>Options <a href="https://github.com/sgminer-dev/sgminer">SGMINER's Github page</a> for the following options</label>
+      <form name="optionForm" class="form-horizontal">
+          <div class="row">
+              <label class="col-sm-3">Sgminer options</label>
+              <label class="col-sm-4">Value</label>
+              <label class="col-sm-2">Description</label>
+
+          </div>
+          <div class="form-group" ng-repeat="option in options">
+              <!--<div  ng-show="option.key.indexOf('api')==-1"> -->
+              <div class="col-sm-2"  >
+                  <input type="text" ng-model="option.key" class="form-control" required>
+              </div>
+              <div class="col-sm-3"  >
+                  <div class="input-group">
+                  <input type="text" ng-model="option.value" class="form-control" required>
+                  <div class="input-group-btn">
+                      <button type="button" ng-click="optionRemove($index)" title="We suggest you backup before make any changes." class="btn btn-default pull-right">&times;</button>
+                  </div>
+                  </div>
+
+              </div>
+              <div class="col-sm-6">
+                  <input type="text"  class="form-control" ng-model="option.description"  >
+              </div>
+
+          </div>
+          <button type="button" class="btn btn-default" ng-click="optionBack()">Reload Options</button>
+          <button type="button" class="btn btn-default" ng-click="optionAdd({'key':'x'})">Add Options</button>
+          <button type="button" ng-show="optionForm.$dirty && optionForm.$valid" class="btn btn-success" ng-click="optionSave()">Save Options</button>
+      </form>
+
+  </div>
+</div>
