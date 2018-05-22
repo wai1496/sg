@@ -2,7 +2,7 @@
 
 /* Filters */
 
-angular.module('Peon.filters', [])
+angular.module('Scripta.filters', [])
 .filter('shortUrl', function() {
   return function(temp) {
     return temp.replace('//', '').split(':')[1];
